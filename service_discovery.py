@@ -18,6 +18,24 @@ def signal_received(path, interfaces):
     print('received signal')
     print(f'path = {path}')
     print(f'interfaces = {interfaces}')
+    print('---------------------------------')
+    if bluetooth_constants.GATT_SERVICE_INTERFACE in interfaces:
+        UUID = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['UUID']
+        print(f'UUID = {UUID}')
+
+        Device = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['Device']
+        print(f'Device = {Device}')
+
+        Primary = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['Primary']
+        print(f'Primary = {Primary}')
+
+        Includes = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['Includes']
+        print(f'Includes = {Includes}')
+    print('end')
+
+
+
+
 
 
 def connect():

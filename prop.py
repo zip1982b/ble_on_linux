@@ -32,6 +32,11 @@ dbus.String('org.freedesktop.DBus.Properties'): dbus.Dictionary({}, signature=db
 )
 end
 
+interfaces = {'org.freedesktop.DBus.Introspectable': {},
+        'org.bluez.GattService1': {'UUID': '00001801-0000-1000-8000-00805f9b34fb', 'Device': '/org/bluez/hci0/dev_6D_9E_14_7C_30_26', 'Primary': True, 'Includes': []}
+        'org.freedesktop.DBus.Properties': {}
+        }
+
 received signal
 path = /org/bluez/hci0/dev_6D_9E_14_7C_30_26/service0001/char0002
 interfaces = dbus.Dictionary(
