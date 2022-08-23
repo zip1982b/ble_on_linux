@@ -16,22 +16,30 @@ device_interface = None
 
 def signal_received(path, interfaces):
     print('received signal')
-    print(f'path = {path}')
-    print(f'interfaces = {interfaces}')
-    print('---------------------------------')
     if bluetooth_constants.GATT_SERVICE_INTERFACE in interfaces:
-        UUID = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['UUID']
-        print(f'UUID = {UUID}')
+        properties = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]
+        print("----------------------------------------------------------")
+        print(f'service path: {path}')
+        if 'UUID' in properties:
+            uuid = properties['UUID']
+            print("service UUID: ", bluetooth_utils.dbus_to_python(uuid))
+            print("service name: ", bluetooth_utils.get_name_from_uuid(uuid))
+        return
 
-        Device = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['Device']
-        print(f'Device = {Device}')
+    if bluetooth_constants.GATT_CHARACTERISTIC_INTERFACE in interfaces:
+        properties = interfaces[bluetooth_constants.GATT_CHARACTERISTIC_INTERFACE]
+        print(f'characteristic path: {path}')
+        if 'UUID' in properties:
+            uuid = properties['UUID']
+            print(" CHR UUID: ", bluetooth_utils.dbus_to_python(uuid))
+            print(" CHR name: ", bluetooth_utils.get_name_from_uuid(uuid))
+            flags = ""
+            for flag in properties['Flags']:
+                flags = flags + flag + ","
+            print(" CHR flags : ", flags)
+        return
 
-        Primary = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['Primary']
-        print(f'Primary = {Primary}')
 
-        Includes = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]['Includes']
-        print(f'Includes = {Includes}')
-    print('end')
 
 
 
