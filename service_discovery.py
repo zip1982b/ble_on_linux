@@ -14,7 +14,7 @@ bus = None
 device_interface = None
 
 
-def signal_received(path, interfaces):
+def interfaces_added_sig_rcvd(path, interfaces):
     print('received signal')
     if bluetooth_constants.GATT_SERVICE_INTERFACE in interfaces:
         properties = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]
@@ -87,7 +87,7 @@ else:
     print("Connecting to " + bdaddr)
     res = connect()
     if res == bluetooth_constants.RESULT_OK:
-        bus.add_signal_receiver(signal_received, dbus_interface = bluetooth_constants.DBUS_OM_IFACE, signal_name = "InterfacesAdded")
+        bus.add_signal_receiver(interfaces_added_sig_rcvd, dbus_interface = bluetooth_constants.DBUS_OM_IFACE, signal_name = "InterfacesAdded")
         mainloop = GLib.MainLoop()
         mainloop.run()
 
