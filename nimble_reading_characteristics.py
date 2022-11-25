@@ -1,6 +1,4 @@
 #!/usr/bin/python3
-
-
 import bluetooth_constants
 import bluetooth_utils
 import dbus
@@ -15,35 +13,44 @@ sys.path.insert(0, '.')
 bus = None
 device_interface = None
 device_path = None
-found_dis = False
-found_mn = False
-dis_path = None
-mn_path = None
+found_gatt_service_test = False
+found_gatt_cha_test_r = False
+found_gatt_cha_test_rw = False
+gst_path = None
+gct_r_path = None
+gct_rw_path = None
+
 
 
 def service_discovery_completed():
-    global found_dis
-    global found_mn
-    global dis_path
-    global mn_path
+    global found_gatt_service_test
+    global found_gatt_cha_test_r
+    global found_gatt_cha_test_rw
+    global gst_path
+    global gct_r_path
+    global gct_rw_path
     global bus
-    if found_dis and found_mn:
-        print("Required service and characteristic found - device is OK")
-        print("Device Information service path: ",dis_path)
-        print("Model Number String characteristic path: ",mn_path)
+    if found_gatt_service_test and found_gatt_cha_test_r and found_gatt_cha_test_rw:
+        print("Required service and characteristics found - device is OK")
+        print("Service path: ",gst_path)
+        print("Characteristic path: ",gct_r_path)
+        print("Characteristic path: ",gct_rw_path)
     else:
         print("Required service and characteristic were not found - device is NOK")
-        print("Device Information service found: ",str(found_dis))
-        print("Device Name characteristic found: ",str(found_mn))
+        print("service found: ",str(found_gatt_service_test))
+        print("Characteristic read only found: ",str(found_gatt_cha_test_r))
+        print("Characteristic rw found: ",str(found_gatt_cha_test_rw))
         bus.remove_signal_receiver(interfaces_added_sig_rcvd,"InterfacesAdded")
         bus.remove_signal_receiver(properties_changed,"PropertiesChanged")
         mainloop.quit()
 
 def interfaces_added_sig_rcvd(path, interfaces):
-    global found_dis
-    global found_mn
-    global dis_path
-    global mn_path
+    global found_gatt_service_test
+    global found_gatt_cha_test_r
+    global found_gatt_cha_test_rw
+    global gst_path
+    global gct_r_path
+    global gct_rw_path
     print('received signal')
     if bluetooth_constants.GATT_SERVICE_INTERFACE in interfaces:
         properties = interfaces[bluetooth_constants.GATT_SERVICE_INTERFACE]
@@ -51,9 +58,9 @@ def interfaces_added_sig_rcvd(path, interfaces):
         print(f'service path: {path}')
         if 'UUID' in properties:
             uuid = properties['UUID']
-            if uuid == bluetooth_constants.GATT:
-                found_dis = True
-                dis_path = path
+            if uuid == bluetooth_constants.GATT_SERVICE_TEST:
+                found_gatt_service_test = True
+                gst_path = path
             print("service UUID: ", bluetooth_utils.dbus_to_python(uuid))
             print("service name: ", bluetooth_utils.get_name_from_uuid(uuid))
         return
@@ -63,9 +70,14 @@ def interfaces_added_sig_rcvd(path, interfaces):
         print(f'characteristic path: {path}')
         if 'UUID' in properties:
             uuid = properties['UUID']
-            if uuid == bluetooth_constants.SVC_CH:
-                found_mn = True
-                mn_path = path
+            if uuid == bluetooth_constants.GATT_CHA_TEST_R:
+                found_gatt_cha_test_r = True
+                gct_r_path = path
+
+            if uuid == bluetooth_constants.GATT_CHA_TEST_RW:
+                found_gatt_cha_test_rw = True
+                gct_rw_path = path
+
             print(" CHR UUID: ", bluetooth_utils.dbus_to_python(uuid))
             print(" CHR name: ", bluetooth_utils.get_name_from_uuid(uuid))
             flags = ""
@@ -73,6 +85,9 @@ def interfaces_added_sig_rcvd(path, interfaces):
                 flags = flags + flag + ","
             print(" CHR flags : ", flags)
         return
+
+
+
 
 
 def properties_changed(interface, changed, invalidated, path):

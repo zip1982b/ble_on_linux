@@ -50,6 +50,9 @@ UUID_NAMES = {
     "e95d9250-251d-470a-a062-fa1922dfa9a8" : "Temperature",
     "e95d93ee-251d-470a-a062-fa1922dfa9a8" : "LED Text",
     "00002902-0000-1000-8000-00805f9b34fb" : "Client Characteristic Configuration",
+    "59462f12-9543-9999-12c8-58b459a2712d" : "Security test service",
+    "5c3a659e-897e-45e1-b016-007107c96df6" : "Random number generator",
+    "5c3a659e-897e-45e1-b016-007107c96df7" : "Static value"
 }    
 
 DEVICE_INF_SVC_UUID = "0000180a-0000-1000-8000-00805f9b34fb"
@@ -61,3 +64,7 @@ TEMPERATURE_CHR_UUID = "e95d9250-251d-470a-a062-fa1922dfa9a8"
 
 LED_SVC_UUID = "e95dd91d-251d-470a-a062-fa1922dfa9a8"
 LED_TEXT_CHR_UUID = "e95d93ee-251d-470a-a062-fa1922dfa9a8"
+
+GATT_SERVICE_TEST = "59462f12-9543-9999-12c8-58b459a2712d"
+GATT_CHA_TEST_R =   "5c3a659e-897e-45e1-b016-007107c96df6"
+GATT_CHA_TEST_RW =  "5c3a659e-897e-45e1-b016-007107c96df7"
